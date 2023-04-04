@@ -13,10 +13,16 @@ class HistoryRecord : Codable, Identifiable, ObservableObject, Equatable, Hashab
     @Published var titleImageUrl: URL?
     @Published var totalTimeSecond: Int?
     @Published var currentTimeSecond: Int?
-    
+
     var playerItem: AVPlayerItem?
-    var getPlayerItem: AVPlayerItem {
+    var getPlayerItem: AVPlayerItem? {
         get {
+            
+            let fileExist = try? url.checkResourceIsReachable()
+            if (fileExist != true) {
+                return nil;
+            }
+
             if playerItem == nil {
                 playerItem = AVPlayerItem(url: url)
                 var cmTime = playerItem?.currentTime()
